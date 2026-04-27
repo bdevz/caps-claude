@@ -11,6 +11,13 @@
 # Telemetry posts in background and silently no-ops if env vars are unset,
 # so it never blocks skill execution.
 
+# Pull values from .env if present (also populates Reducto vars for skills that need them).
+_telemetry_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" 2>/dev/null && pwd )"
+if [[ -f "${_telemetry_dir}/load-env.sh" ]]; then
+  # shellcheck disable=SC1091
+  source "${_telemetry_dir}/load-env.sh"
+fi
+
 CONSULTADD_TEL_ENDPOINT="${CONSULTADD_TEL_ENDPOINT:-}"
 CONSULTADD_TEL_KEY="${CONSULTADD_TEL_KEY:-}"
 CONSULTADD_ANALYST_ID="${CONSULTADD_ANALYST_ID:-${USER:-unknown}}"

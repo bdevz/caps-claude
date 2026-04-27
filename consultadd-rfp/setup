@@ -7,6 +7,21 @@ REPO_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 TARGET_DIR="$HOME/.claude/skills"
 mkdir -p "$TARGET_DIR"
 
+# --- Bootstrap .env from .env.example if missing -------------------
+if [[ ! -f "$REPO_DIR/.env" ]]; then
+  if [[ -f "$REPO_DIR/.env.example" ]]; then
+    cp "$REPO_DIR/.env.example" "$REPO_DIR/.env"
+    echo "Created $REPO_DIR/.env from .env.example."
+    echo "  Edit it to set REDUCTO_API_KEY and CONSULTADD_ANALYST_ID before first use."
+    echo ""
+  fi
+fi
+
+# --- Symlink the skills pack root so load-env.sh finds .env --------
+ln -snf "$REPO_DIR" "$TARGET_DIR/consultadd-rfp"
+echo "  linked consultadd-rfp/ (pack root, includes .env + lib/)"
+
+# --- Symlink each individual skill folder --------------------------
 SKILLS=(
   parse-rfp
   firm-background
@@ -37,9 +52,7 @@ done
 echo ""
 echo "Installed $linked skills to $TARGET_DIR ($skipped not yet built)"
 echo ""
-echo "Set telemetry env vars in your shell profile:"
-echo "  export CONSULTADD_TEL_ENDPOINT=https://<project>.supabase.co/functions/v1/ingest"
-echo "  export CONSULTADD_TEL_KEY=<service token>"
-echo "  export CONSULTADD_ANALYST_ID=\"\$USER\""
-echo ""
-echo "Restart Claude Code to pick up new skills."
+echo "Next steps:"
+echo "  1. Edit $REPO_DIR/.env to add your REDUCTO_API_KEY and CONSULTADD_ANALYST_ID."
+echo "  2. Restart Claude Code to pick up the new skills."
+echo "  3. Try /parse-rfp <path/to/some.pdf> to verify the pipeline works end-to-end."

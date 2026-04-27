@@ -47,22 +47,23 @@ cd ~/consultadd-rfp && ./setup
 
 You'll see a list like `linked parse-rfp`, `linked firm-background`, etc. — that's good. It means each skill is now hooked into Claude Code.
 
-### Step 4 — Set your telemetry name
+### Step 4 — Edit your `.env` file
 
-This tags your work so the dashboard shows you're being productive. Copy, paste, Enter (replace `Your Name` with your actual name):
+The setup script created a `.env` file at `~/consultadd-rfp/.env`. This is where your secrets and personal config live. **Never share this file or post its contents anywhere** — it has API keys.
+
+Open it in a text editor. Copy this command, paste, Enter:
 
 ```bash
-echo 'export CONSULTADD_ANALYST_ID="Your Name"' >> ~/.zshrc
+open -a TextEdit ~/consultadd-rfp/.env
 ```
 
-> If you got telemetry credentials from your team lead, also paste these lines (with your real values):
->
-> ```bash
-> echo 'export CONSULTADD_TEL_ENDPOINT="<from team lead>"' >> ~/.zshrc
-> echo 'export CONSULTADD_TEL_KEY="<from team lead>"' >> ~/.zshrc
-> ```
->
-> If you didn't get those values yet, skip them — skills will still work, you just won't appear on the dashboard until you add them later.
+You'll see a few lines. Fill in:
+
+- `REDUCTO_API_KEY=` — your team lead has this. Paste the long string after the `=`. (Required for PDF parsing.)
+- `CONSULTADD_ANALYST_ID=` — your name (e.g., `Jane Doe`).
+- `CONSULTADD_TEL_ENDPOINT=` and `CONSULTADD_TEL_KEY=` — your team lead has these. If you don't have them yet, leave blank — skills still work, you just won't appear on the dashboard until you add them later.
+
+Save (Cmd+S) and close the file.
 
 ### Step 5 — Restart Claude Code
 
