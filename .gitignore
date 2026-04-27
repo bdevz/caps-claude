@@ -1,0 +1,13 @@
+# Secrets — NEVER commit
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
+**/.env.*.local
+
+# OS junk
+.DS_Store
+
+# Conductor workspace scratch
+.context/
