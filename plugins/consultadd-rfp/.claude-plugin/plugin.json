@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "consultadd-rfp",
+  "description": "Multi-expert RFP authoring workflow for Consultadd. Parses RFPs, injects firm boilerplate, runs eligibility checks, dispatches specialist drafters (tech, legal, ops, sales-marketing, public-policy), reviews, cross-verifies, and produces submission-ready proposals — with human-in-the-loop gates at eligibility, pricing, capability claims, and attestations.",
+  "author": {
+    "name": "Consultadd"
+  },
+  "homepage": "https://github.com/bdevz/caps-claude",
+  "repository": "https://github.com/bdevz/caps-claude",
+  "keywords": ["rfp", "proposals", "consultadd", "public-services"]
+}
