@@ -1,0 +1,33 @@
+# Fly.io deploy config for the Reducto MCP server.
+# After `fly launch`, set the secret:
+#   fly secrets set REDUCTO_API_KEY=<key>
+# Then deploy:
+#   fly deploy
+
+app = "consultadd-reducto-mcp"
+primary_region = "iad"  # us-east; change to nearest your team's location
+
+[build]
+
+[env]
+  PORT = "8080"
+  REDUCTO_BASE_URL = "https://platform.reducto.ai"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    timeout = "5s"
+    path = "/health"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

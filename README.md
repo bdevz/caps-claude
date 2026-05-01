@@ -42,9 +42,13 @@ caps-claude/
 │       └── skills/
 │           ├── _shared/knowledge/    # Institutional knowledge (PR-only updates)
 │           └── <skill>/SKILL.md      # 12 skills — see plugin README for details
+├── mcp-servers/
+│   └── reducto/                      # v1.5 self-hosted Reducto MCP wrapper (design + scaffold)
 ├── README.md                         # this file
 └── .gitignore
 ```
+
+The `mcp-servers/` tree is intentionally NOT under `plugins/` — Claude Team's marketplace only discovers plugins (skills/agents/etc.). MCP servers are deployed separately and connected as Custom Connectors at the org level. See [`mcp-servers/reducto/README.md`](mcp-servers/reducto/README.md) for the v1.5 design.
 
 ## Approach
 

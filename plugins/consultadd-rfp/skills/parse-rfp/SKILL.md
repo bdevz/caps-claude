@@ -56,12 +56,11 @@ Convert an uploaded RFP into structured markdown that downstream skills can read
 
 ## Roadmap (v1.5)
 
-When the Reducto MCP Connector is connected at the org level, this skill will be updated to:
+A **self-hosted Reducto MCP wrapper** is designed at `mcp-servers/reducto/` (in this same repo). When deployed and connected as a Claude Team Custom Connector, this skill will be updated to:
 
-1. Call `Reducto:upload` (or equivalent fully-qualified tool name) with the user's PDF
-2. Receive a `file_id`
-3. Call `Reducto:parse` with `{"input": file_id}`
-4. Concatenate `result.chunks[].content` into `./rfp-parsed.md`
-5. Set `parse_method=reducto-mcp` and `parse_confidence=high`
+1. Call `Reducto:parse_pdf` (the wrapper exposes one tool that handles both Reducto's `/upload` and `/parse` internally; exact fully-qualified tool name to be verified once the connector is connected)
+2. Receive `{ markdown, page_count, parse_method }`
+3. Write the markdown into `./rfp-parsed.md`
+4. Set `parse_method=reducto-mcp` and `parse_confidence=high` in `./rfp-meta.json`
 
-Output contract (`rfp-parsed.md`, `rfp-meta.json`) stays identical, so downstream skills don't need any change.
+Output contract (`rfp-parsed.md`, `rfp-meta.json`) stays identical, so downstream skills don't need any change. The wrapper's design + deploy plan lives in `mcp-servers/reducto/README.md`.
