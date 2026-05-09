@@ -1,41 +1,63 @@
 # caps-claude
 
-**Claude Experts for Consultadd Public Services.** A repository of Claude Code skill packs that codify how Consultadd's Public Services team does its highest-leverage work — starting with RFP/proposal authoring.
+**Claude Skills Marketplace for Consultadd Public Services.** This repository is a Claude Team plugin marketplace that auto-distributes Consultadd's institutional skills to every analyst on the team via Claude.ai's GitHub sync.
 
-> **Are you an analyst getting started?** Jump to [`consultadd-rfp/ONBOARDING.md`](consultadd-rfp/ONBOARDING.md) for a step-by-step setup written for non-technical users.
+When the Consultadd Claude Team admin connects this repo via the Claude GitHub App and tracks the `main` branch, every plugin listed in `.claude-plugin/marketplace.json` becomes available to all 12+ team members in claude.ai web/desktop. Updates land via `main` and propagate automatically.
 
-## What's Here
+## Plugins in this marketplace
 
-| Pack | Status | Purpose |
+| Plugin | Status | What it does |
 |---|---|---|
-| [`consultadd-rfp/`](consultadd-rfp/) | scaffold complete; knowledge content + dashboards pending | 12-skill Claude Code pack for the multi-expert RFP workflow with a `/rfp` orchestrator |
+| [`consultadd-rfp`](plugins/consultadd-rfp/) | v1 in pilot (April 2026) | 12-skill RFP authoring pipeline — parse, eligibility check, multi-expert drafting, cross-verify, with human gates at the high-stakes decisions |
 
-More packs will land here as we standardize other Consultadd workflows.
+More plugins will land here as we standardize other Consultadd workflows (sales discovery, client research, account-planning, etc.).
 
-## The Approach
+## For analysts: getting started
 
-Modeled on [garrytan/gstack](https://github.com/garrytan/gstack): per-skill folders, slash-command invocation, autoplan-style orchestrators that read downstream skills at runtime, and persistent telemetry/learnings. Each pack hard-gates the high-stakes hallucination zones (in RFPs: eligibility, pricing, capability claims, attestations) to humans, so Claude operates as a coworker — not an autonomous replacement.
+If you're an analyst on the Consultadd Claude Team and the admin has already connected this marketplace: open claude.ai → Customize → Skills, look for the `consultadd-rfp` plugin, then read [`plugins/consultadd-rfp/ONBOARDING.md`](plugins/consultadd-rfp/ONBOARDING.md) for your first-RFP walkthrough.
 
-## Goal
+## For admins: connecting the marketplace
 
-Take Consultadd's 30+ analyst proposal team from a manual ChatGPT-then-Claude workflow to a consistent, gated, audited pipeline that scales toward **1,000 RFPs/month** without sacrificing quality. Every skill pack here is built against that thesis.
+In Claude Desktop:
 
-## Repository Layout
+1. Organization settings → Plugins → "Add plugins" → "GitHub"
+2. Enter the repo: `bdevz/caps-claude`
+3. Pick branch `main`, set `consultadd-rfp` to "Installed by default"
+4. Verify plugins appear under Customize → Skills for a test user
+
+The Claude GitHub App must be installed on the repo before the marketplace can sync. Sync triggers on PR merge to `main`.
+
+## Repository layout
 
 ```
 caps-claude/
-├── README.md                  # this file
-└── consultadd-rfp/            # first pack — RFP authoring
-    ├── README.md              # pack-level technical reference
-    ├── ONBOARDING.md          # analyst-facing setup + first-RFP walkthrough
-    ├── ARCHITECTURE.md
-    ├── CLAUDE.md
-    ├── setup                  # symlink installer for ~/.claude/skills/
-    ├── lib/telemetry.sh
-    ├── knowledge/             # institutional knowledge (skeletons; DRI populates)
-    └── <skill>/SKILL.md       # 12 skills
+├── .claude-plugin/
+│   └── marketplace.json              # Catalog Claude Team reads to discover plugins
+├── plugins/
+│   └── consultadd-rfp/
+│       ├── .claude-plugin/plugin.json
+│       ├── README.md                 # Plugin technical reference
+│       ├── ARCHITECTURE.md
+│       ├── ONBOARDING.md             # Analyst-facing setup + first-RFP walkthrough
+│       └── skills/
+│           ├── _shared/knowledge/    # Institutional knowledge (PR-only updates)
+│           └── <skill>/SKILL.md      # 12 skills — see plugin README for details
+├── mcp-servers/
+│   └── reducto/                      # v1.5 self-hosted Reducto MCP wrapper (design + scaffold)
+├── README.md                         # this file
+└── .gitignore
 ```
+
+The `mcp-servers/` tree is intentionally NOT under `plugins/` — Claude Team's marketplace only discovers plugins (skills/agents/etc.). MCP servers are deployed separately and connected as Custom Connectors at the org level. See [`mcp-servers/reducto/README.md`](mcp-servers/reducto/README.md) for the v1.5 design.
+
+## Approach
+
+Modeled on the gstack philosophy (per-skill folders, slash-command invocation, autoplan-style review loops, persistent learnings) but adapted for Claude.ai's runtime — no sub-agent dispatch, no bash hooks, no `.env` secrets at runtime. Skills are pure prompt content; secrets live in MCP Connectors at the org level when needed (v1.5+).
+
+## Goal
+
+Take Consultadd's analyst proposal team to a consistent, gated, audited pipeline that scales toward **1,000 RFPs/month** without sacrificing quality. Every plugin here is built against that thesis. The strategic plan lives at `~/.claude/plans/system-instruction-you-are-working-shimmering-quiche.md` (local, not in repo).
 
 ## Contributing
 
-Adding a new pack: create a sibling folder to `consultadd-rfp/`, follow the same structure (per-skill folders + `setup` script + `knowledge/` for institutional content + `ONBOARDING.md` for the human users). Existing analysts shouldn't need to re-onboard each time a pack lands.
+Adding a new plugin: create a sibling folder under `plugins/`, add its `.claude-plugin/plugin.json`, register it in `.claude-plugin/marketplace.json`, and PR. Once `main` is merged, the new plugin propagates to all installed analysts within minutes.

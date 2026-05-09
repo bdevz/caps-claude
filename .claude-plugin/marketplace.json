@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-marketplace.json",
+  "name": "caps-claude",
+  "description": "Consultadd Public Services skills for the Consultadd team — RFP authoring, eligibility checking, multi-expert proposal drafting.",
+  "owner": {
+    "name": "Consultadd",
+    "email": "jason@jasonemermd.com"
+  },
+  "plugins": [
+    {
+      "name": "consultadd-rfp",
+      "source": "./plugins/consultadd-rfp",
+      "description": "Multi-expert RFP authoring workflow. Parses RFPs, injects firm boilerplate, runs eligibility checks, dispatches specialist drafters, reviews, cross-verifies, and produces submission-ready proposals — with human-in-the-loop gates at eligibility, pricing, capability claims, and attestations.",
+      "category": "proposals",
+      "keywords": ["rfp", "proposals", "consultadd", "public-services", "government-contracting"]
+    }
+  ]
+}
